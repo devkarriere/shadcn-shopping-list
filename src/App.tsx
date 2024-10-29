@@ -89,41 +89,65 @@ export default function App() {
               </p>
             </div>
             <div className="flex gap-2">
-              {item.bought && (
+              {item.bought ? (
+                <>
+                  <Button
+                    variant="destructive"
+                    size={"icon"}
+                    onClick={() => {
+                      setList([
+                        ...list.filter(
+                          (listItem) => listItem.name !== item.name
+                        ),
+                      ]);
+                      toast({
+                        description:
+                          item.name + " wurde aus der Einkaufsliste entfernt.",
+                        title: "Produkt gelöscht",
+                      });
+                    }}
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setList([
+                        {
+                          name: item.name,
+                          quantity: item.quantity,
+                          bought: !item.bought,
+                        },
+                        ...list.filter(
+                          (listItem) => listItem.name !== item.name
+                        ),
+                      ]);
+                    }}
+                    variant={"secondary"}
+                    size={"default"}
+                  >
+                    <ResetIcon />
+                    Zurück
+                  </Button>
+                </>
+              ) : (
                 <Button
-                  variant="destructive"
-                  size={"icon"}
                   onClick={() => {
                     setList([
                       ...list.filter((listItem) => listItem.name !== item.name),
+                      {
+                        name: item.name,
+                        quantity: item.quantity,
+                        bought: !item.bought,
+                      },
                     ]);
-                    toast({
-                      description:
-                        item.name + " wurde aus der Einkaufsliste entfernt.",
-                      title: "Produkt gelöscht",
-                    });
                   }}
+                  variant={"outline"}
+                  size={"lg"}
                 >
-                  <TrashIcon className="w-4 h-4" />
+                  <CheckCircledIcon />
+                  Abhaken
                 </Button>
               )}
-              <Button
-                onClick={() => {
-                  setList([
-                    ...list.filter((listItem) => listItem.name !== item.name),
-                    {
-                      name: item.name,
-                      quantity: item.quantity,
-                      bought: !item.bought,
-                    },
-                  ]);
-                }}
-                variant={!item.bought ? "outline" : "secondary"}
-                size={!item.bought ? "lg" : "default"}
-              >
-                {!item.bought ? <CheckCircledIcon /> : <ResetIcon />}
-                {!item.bought ? "Abhaken" : "Zurück"}
-              </Button>
             </div>
           </div>
         ))}
