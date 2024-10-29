@@ -74,63 +74,59 @@ export default function App() {
         Eintrag Hinzufügen
       </Button>
       <div className="flex flex-col w-full gap-2 mt-6">
-        {list
-          .sort((item) => (item.bought ? 1 : -1))
-          .map((item) => (
-            <div className="rounded-xl border bg-card text-card-foreground shadow p-6 flex justify-between items-center">
-              <div>
-                <h3
-                  className={`text-lg font-semibold${
-                    item.bought ? " text-muted-foreground line-through" : ""
-                  }`}
-                >
-                  {item.name}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Anzahl: {item.quantity}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                {item.bought && (
-                  <Button
-                    variant="destructive"
-                    size={"icon"}
-                    onClick={() => {
-                      setList([
-                        ...list.filter(
-                          (listItem) => listItem.name !== item.name
-                        ),
-                      ]);
-                      toast({
-                        description:
-                          item.name + " wurde aus der Einkaufsliste entfernt.",
-                        title: "Produkt gelöscht",
-                      });
-                    }}
-                  >
-                    <TrashIcon className="w-4 h-4" />
-                  </Button>
-                )}
+        {list.map((item) => (
+          <div className="rounded-xl border bg-card text-card-foreground shadow p-6 flex justify-between items-center">
+            <div>
+              <h3
+                className={`text-lg font-semibold${
+                  item.bought ? " text-muted-foreground line-through" : ""
+                }`}
+              >
+                {item.name}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Anzahl: {item.quantity}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              {item.bought && (
                 <Button
+                  variant="destructive"
+                  size={"icon"}
                   onClick={() => {
                     setList([
                       ...list.filter((listItem) => listItem.name !== item.name),
-                      {
-                        name: item.name,
-                        quantity: item.quantity,
-                        bought: !item.bought,
-                      },
                     ]);
+                    toast({
+                      description:
+                        item.name + " wurde aus der Einkaufsliste entfernt.",
+                      title: "Produkt gelöscht",
+                    });
                   }}
-                  variant={!item.bought ? "outline" : "secondary"}
-                  size={!item.bought ? "lg" : "default"}
                 >
-                  {!item.bought ? <CheckCircledIcon /> : <ResetIcon />}
-                  {!item.bought ? "Abhaken" : "Zurück"}
+                  <TrashIcon className="w-4 h-4" />
                 </Button>
-              </div>
+              )}
+              <Button
+                onClick={() => {
+                  setList([
+                    ...list.filter((listItem) => listItem.name !== item.name),
+                    {
+                      name: item.name,
+                      quantity: item.quantity,
+                      bought: !item.bought,
+                    },
+                  ]);
+                }}
+                variant={!item.bought ? "outline" : "secondary"}
+                size={!item.bought ? "lg" : "default"}
+              >
+                {!item.bought ? <CheckCircledIcon /> : <ResetIcon />}
+                {!item.bought ? "Abhaken" : "Zurück"}
+              </Button>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );
